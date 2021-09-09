@@ -65,18 +65,18 @@ export default () => {
             <Header>
                     <Title>
                         Apollo With React
-                        {/* {new Date().getFullYear()} */}
                     </Title>
                 <Subtitle>GraphQL Is Very Awesome</Subtitle>
             </Header>
-            {loading && <Loading>Loading...</Loading>}
-            {!loading && data.movies && (
+
+            {loading ? <Loading>Loading...</Loading> :
                 <Movies>
-                {data.movies.map(m => (
-                    <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
-                ))}
+                    {data?.movies.map(m => (
+                        <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
+                    ))}
                 </Movies>
-            )}
+            }
+            
         </Container>
     );
 }

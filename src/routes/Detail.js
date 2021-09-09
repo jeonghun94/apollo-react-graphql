@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useParams } from "react-router";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
+import Loader from "../components/Loader";
 
 const GET_MOVIE = gql`
     query getMovie($id: Int!) {
@@ -18,7 +19,8 @@ const GET_MOVIE = gql`
 
 const Container = styled.div`
     height: 100vh;
-    background-image: linear-gradient(-45deg, #d754ab, #fd723a);
+    /* background-image: linear-gradient(-45deg, #d754ab, #fd723a); */
+    background-image: linear-gradient(-180deg, #012D6B, #F2A42D);
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -59,22 +61,20 @@ export default () => {
     const { loading, data } = useQuery(GET_MOVIE, {
         variables: { id: +id }
     });
+
     return (
         <Container>
-        <Column>
-            <Title>{loading ? "Loading..." : data.movie.title}</Title>
-            {!loading && data.movie && (
-            <>
-                <Subtitle>
-                {data.movie.language} · {data.movie.rating}
-                </Subtitle>
-                <Description>{data.movie.description_intro}</Description>
-            </>
-            )}
-        </Column>
-        <Poster
-            bg={data && data.movie ? data.movie.medium_cover_image : ""}
-        ></Poster>
+            {loading ? <Loader /> :
+                (<Column>
+                    <Title>{data.movie.title}</Title>
+                    <Subtitle>
+                        {data.movie.language} · {data.movie.rating}
+                    </Subtitle>
+                    <Description>{data.movie.description_intro}</Description>
+                </Column>
+                )
+            };
+            <Poster bg={data?.movie ? data.movie.medium_cover_image : ""} />
         </Container>
     );
 };
